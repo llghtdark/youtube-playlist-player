@@ -1,0 +1,76 @@
+/* body {
+    color: antiquewhite;
+    background-color: #4c5c6d;
+}
+.main {
+    align-items: center;
+    margin: auto;
+    width: 90%;
+    padding: 10px;
+    text-align: center;
+    font-family: "Lucida Console", Times, serif;
+}
+footer{
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+} */
+
+body {
+    background-color: #2E2E2E;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 80%;
+    max-width: 1200px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.playlist-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+#playlist {
+    width: 40%;
+    background-color: #3E3E3E;
+    overflow-y: auto;
+    max-height: 600px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#playlist div {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #525252;
+}
+
+#playlist div:hover {
+    background-color: #525252;
+}
+
+#videoPlayer {
+    width: 60%;
+    background-color: #3E3E3E;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
