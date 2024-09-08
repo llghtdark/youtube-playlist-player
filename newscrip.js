@@ -19,8 +19,34 @@ function loadPlaylist(playlistId) {
     const playlistContainer = document.getElementById('playlist');
     const videoFrame = document.getElementById('videoFrame');
 
-    
+       // Load saved preferences
+       loadPreferences();
 
+       function savePreferences() {
+           localStorage.setItem('soundEnabled', soundToggle.checked);
+           localStorage.setItem('backgroundColor', colorPicker.value);
+       }
+   
+       function loadPreferences() {
+           const soundEnabled = localStorage.getItem('soundEnabled');
+           const backgroundColor = localStorage.getItem('backgroundColor');
+   
+           if (soundEnabled !== null) {
+               soundToggle.checked = JSON.parse(soundEnabled);
+           }
+           if (backgroundColor !== null) {
+               document.body.style.backgroundColor = backgroundColor;
+               colorPicker.value = backgroundColor;
+           }
+       }
+   
+       // Save preferences when options are changed
+       soundToggle.addEventListener('change', savePreferences);
+       colorPicker.addEventListener('input', function() {
+           document.body.style.backgroundColor = colorPicker.value;
+           savePreferences();
+       });
+       
     let nextPageToken = '';
     // Clear the existing playlist
     playlistContainer.innerHTML = '';
