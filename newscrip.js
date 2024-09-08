@@ -18,6 +18,7 @@ function loadPlaylist(playlistId) {
     const apiKey = 'AIzaSyDxRQY0i22rK2kRbWcPawaItz1XKtOBGHA'; // Replace with your API key
     const playlistContainer = document.getElementById('playlist');
     const videoFrame = document.getElementById('videoFrame');
+    const colorPicker = document.getElementById('colorpicker');
 
        // Load saved preferences
        loadPreferences();
@@ -46,7 +47,7 @@ function loadPlaylist(playlistId) {
            document.body.style.backgroundColor = colorPicker.value;
            savePreferences();
        });
-       
+
     let nextPageToken = '';
     // Clear the existing playlist
     playlistContainer.innerHTML = '';
