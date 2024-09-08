@@ -28,10 +28,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <audio id="changeSound" src="vhschange.wav"></audio>
+    <audio id="clickSound" src="vhsclick.wav"></audio>
+    <audio id="Startup" src="vhsstart.wav"></audio>
     <div class="container">
         <h1>SONGS</h1>
         <div class="controls">
-            <!-- Add playback control icons here if needed -->
+            <form id="playlistForm">
+                <label for="playlistId">Enter YouTube Playlist ID:</label>
+                <input type="text" id="playlistId" name="playlistId" required>
+                <button type="submit">Display Playlist</button>
+            </form>
         </div>
         <div class="playlist-wrapper">
             <div id="playlist">
@@ -46,6 +53,30 @@
                 </iframe>
             </div>
         </div>
+
+        <div id="sidePanel" class="side-panel">
+            
+            <h3>Options</h3>
+            <label>
+              <input type="checkbox" id="autoplayToggle" onchange="toggleAutoplay()"> Autoplay
+            </label>
+            <label>
+              <input type="checkbox" id="filterUnavailable" onchange="toggleFilter()"> Filter Unavailable Videos
+            </label>
+            <label for="soundToggle">
+                <input type="checkbox" id="soundToggle" checked> VHS sounds
+            </label>
+
+            <footer>
+                <p>change background color</p>
+                <input type="color" id="colorpicker" value="#161616">
+            </footer>
+          </div>
+          
+          <!-- Button to open the panel -->
+          <button class="open-panel-btn" onclick="togglePanel()">☰ Options</button>
+
+        
     </div>
     <script src="newscrip.js"></script>
 </body>
