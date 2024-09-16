@@ -35,6 +35,7 @@ function loadPlaylist(playlistId) {
         } else {
             console.error('Playlist not found');
             document.body.style.backgroundImage = "url('https://cliply.co/wp-content/uploads/2021/07/402107790_STATIC_NOISE_400.gif')";
+            warn("Enter a valid Playlist ID");
         }
     })
     .catch(error => {
