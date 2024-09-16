@@ -14,6 +14,11 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed; 
 }
 
 .container {
@@ -27,8 +32,9 @@ h1 {
 }
 
 .playlist-wrapper {
-    display: flex;
+    display: none;
     gap: 10px;
+
 }
 
 #playlist {
@@ -65,7 +71,7 @@ iframe {
 /* General Styles for the Form */
 #playlistForm {
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
     margin-bottom: 10px;
 }

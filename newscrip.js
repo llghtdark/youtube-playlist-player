@@ -11,7 +11,10 @@ document.getElementById('playlistForm').addEventListener('submit', function(even
     loadPlaylist(playlistId); // Load the playlist with the entered ID
     if (soundToggle.checked) {
         Startup.play();
-    }
+
+        document.getElementsByClassName("playlist-wrapper")[0].style.display = "flex";
+        document.getElementById("playlistForm").style.justifyContent = "left";
+    }  
 });
 
 function loadPlaylist(playlistId) {
@@ -19,6 +22,25 @@ function loadPlaylist(playlistId) {
     const playlistContainer = document.getElementById('playlist');
     const videoFrame = document.getElementById('videoFrame');
     const colorPicker = document.getElementById('colorpicker');
+    const playlistTitle = document.getElementById('playlistTitle');
+
+    document.body.style.backgroundImage = "none";
+
+    fetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${playlistId}&key=${apiKey}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.items.length > 0) {
+            const title = data.items[0].snippet.title;
+            playlistTitle.innerText = title; // Set the H1 tag's content to the playlist title
+        } else {
+            console.error('Playlist not found');
+            document.body.style.backgroundImage = "url('https://cliply.co/wp-content/uploads/2021/07/402107790_STATIC_NOISE_400.gif')";
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching playlist title:', error);
+    });
+
 
        // Load saved preferences
        loadPreferences();
