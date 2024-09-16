@@ -1,34 +1,39 @@
-function savePreferences() {
-           localStorage.setItem('soundEnabled', soundToggle.checked);
-           localStorage.setItem('backgroundColor', colorPicker.value);
-       }
-   
-       function loadPreferences() {
-           const soundEnabled = localStorage.getItem('soundEnabled');
-           const backgroundColor = localStorage.getItem('backgroundColor');
-   
-           if (soundEnabled !== null) {
-               soundToggle.checked = JSON.parse(soundEnabled);
-           }
-           if (backgroundColor !== null) {
-               document.body.style.backgroundColor = backgroundColor;
-               colorPicker.value = backgroundColor;
-           }
-       }
-   
-       // Save preferences when options are changed
-       soundToggle.addEventListener('change', savePreferences);
-       colorPicker.addEventListener('input', function() {
-           document.body.style.backgroundColor = colorPicker.value;
-           savePreferences();
-       });
-       loadPreferences();
-
 //sounds
     const clickSound = document.getElementById('clickSound');
     const Startup = document.getElementById('Startup');
     const changeSound = document.getElementById('changeSound');
     const soundToggle = document.getElementById('soundToggle');
+    const colorPicker = document.getElementById('colorpicker');
+
+    
+
+    function savePreferences() {
+        localStorage.setItem('soundEnabled', soundToggle.checked);
+        localStorage.setItem('backgroundColor', colorPicker.value);
+    }
+
+    function loadPreferences() {
+        const soundEnabled = localStorage.getItem('soundEnabled');
+        const backgroundColor = localStorage.getItem('backgroundColor');
+
+        if (soundEnabled !== null) {
+            soundToggle.checked = JSON.parse(soundEnabled);
+        }
+        if (backgroundColor !== null) {
+            document.body.style.backgroundColor = backgroundColor;
+            colorPicker.value = backgroundColor;
+        }
+    }
+
+    // Save preferences when options are changed
+    soundToggle.addEventListener('change', savePreferences);
+    colorPicker.addEventListener('input', function() {
+        document.body.style.backgroundColor = colorPicker.value;
+        savePreferences();
+    });
+
+    loadPreferences();
+
 
 document.getElementById('playlistForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the form from submitting the traditional way
@@ -47,7 +52,6 @@ function loadPlaylist(playlistId) {
     const apiKey = 'AIzaSyDxRQY0i22rK2kRbWcPawaItz1XKtOBGHA'; // Replace with your API key
     const playlistContainer = document.getElementById('playlist');
     const videoFrame = document.getElementById('videoFrame');
-    const colorPicker = document.getElementById('colorpicker');
     const playlistTitle = document.getElementById('playlistTitle');
 
     document.body.style.backgroundImage = "none";
