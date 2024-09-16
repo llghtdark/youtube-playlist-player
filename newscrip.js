@@ -1,3 +1,5 @@
+loadPreferences();
+
 //sounds
     const clickSound = document.getElementById('clickSound');
     const Startup = document.getElementById('Startup');
@@ -41,10 +43,6 @@ function loadPlaylist(playlistId) {
     .catch(error => {
         console.error('Error fetching playlist title:', error);
     });
-
-
-       // Load saved preferences
-       loadPreferences();
 
        function savePreferences() {
            localStorage.setItem('soundEnabled', soundToggle.checked);
