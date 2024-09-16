@@ -3,9 +3,8 @@
     const Startup = document.getElementById('Startup');
     const changeSound = document.getElementById('changeSound');
     const soundToggle = document.getElementById('soundToggle');
+    const staticNoise = document.getElementById('staticNoise');
     const colorPicker = document.getElementById('colorpicker');
-
-    
 
     function savePreferences() {
         localStorage.setItem('soundEnabled', soundToggle.checked);
@@ -31,6 +30,11 @@
         document.body.style.backgroundColor = colorPicker.value;
         savePreferences();
     });
+    function colorReset(){
+        document.body.style.backgroundColor = "#161616";
+        savePreferences();
+        console.log("preferences saved");
+    }
 
     loadPreferences();
 
@@ -42,6 +46,7 @@ document.getElementById('playlistForm').addEventListener('submit', function(even
     loadPlaylist(playlistId); // Load the playlist with the entered ID
     if (soundToggle.checked) {
         Startup.play();
+        staticNoise.pause();
 
         document.getElementsByClassName("playlist-wrapper")[0].style.display = "flex";
         document.getElementById("playlistForm").style.justifyContent = "left";
@@ -64,8 +69,10 @@ function loadPlaylist(playlistId) {
             playlistTitle.innerText = title; // Set the H1 tag's content to the playlist title
         } else {
             console.error('Playlist not found');
-            document.body.style.backgroundImage = "url('https://cliply.co/wp-content/uploads/2021/07/402107790_STATIC_NOISE_400.gif')";
-            warn("Enter a valid Playlist ID");
+            document.body.style.backgroundImage = "url('staticnoise.gif')";
+            
+            staticNoise.play();
+            alert("Enter a valid Playlist ID");
         }
     })
     .catch(error => {
@@ -134,7 +141,6 @@ function togglePanel() {
   
   function toggleAutoplay() {
     var autoplay = document.getElementById("autoplayToggle").checked;
-    
   }
   
   function toggleFilter() {
