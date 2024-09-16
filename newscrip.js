@@ -1,4 +1,3 @@
-loadPreferences();
 function savePreferences() {
            localStorage.setItem('soundEnabled', soundToggle.checked);
            localStorage.setItem('backgroundColor', colorPicker.value);
@@ -23,7 +22,8 @@ function savePreferences() {
            document.body.style.backgroundColor = colorPicker.value;
            savePreferences();
        });
-       
+       loadPreferences();
+
 //sounds
     const clickSound = document.getElementById('clickSound');
     const Startup = document.getElementById('Startup');
