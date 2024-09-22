@@ -31,13 +31,13 @@
         savePreferences();
     });
     function colorReset(){
-        document.body.style.backgroundColor = "#161616";
+        let colorpicker = document.getElementById('colorpicker');
+        colorpicker.value = "#161616";
         savePreferences();
         console.log("preferences saved");
     }
 
     loadPreferences();
-
 
 document.getElementById('playlistForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent the form from submitting the traditional way
@@ -45,8 +45,8 @@ document.getElementById('playlistForm').addEventListener('submit', function(even
     const playlistId = document.getElementById('playlistId').value.trim();
     loadPlaylist(playlistId); // Load the playlist with the entered ID
     if (soundToggle.checked) {
-        Startup.play();
         staticNoise.pause();
+        Startup.play();
 
         document.getElementsByClassName("playlist-wrapper")[0].style.display = "flex";
         document.getElementById("playlistForm").style.justifyContent = "left";
