@@ -1,3 +1,8 @@
+@font-face {
+  font-family: OSDMono;
+  src: url(fonts/VCR_OSD_MONO_1.001.ttf);
+}
+
 footer{
     display: flex;
     justify-content: flex-end;
@@ -30,12 +35,12 @@ body {
 h1 {
     text-align: left;
     margin-bottom: 20px;
+    font-family: "OSDMono";
 }
 
-.playlist-wrapper {
+.interface {
     display: none;
     gap: 10px;
-
 }
 
 #playlist {
@@ -104,7 +109,7 @@ iframe {
     right: -250px;
     background-color: #111;
     overflow-x: hidden;
-    transition: 0.5s;
+    transition: 0.1s;
     padding-top: 60px;
     color: white;
     padding-left: 20px;

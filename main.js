@@ -1,9 +1,10 @@
 //sounds
-    const clickSound = document.getElementById('clickSound');
-    const Startup = document.getElementById('Startup');
-    const changeSound = document.getElementById('changeSound');
+    const clickSound = new Audio("sounds/vhsclick.wav");
+    const Startup = new Audio("sounds/vhsstart.wav");
+    const changeSound = new Audio("sounds/vhschange.wav");
+    const staticNoise = new Audio("sounds/stat.mp3");
+
     const soundToggle = document.getElementById('soundToggle');
-    const staticNoise = document.getElementById('staticNoise');
     const colorPicker = document.getElementById('colorpicker');
 
     function savePreferences() {
@@ -31,8 +32,7 @@
         savePreferences();
     });
     function colorReset(){
-        let colorpicker = document.getElementById('colorpicker');
-        colorpicker.value = "#161616";
+        colorPicker.value = "#161616";
         savePreferences();
         console.log("preferences saved");
     }
@@ -44,40 +44,37 @@ document.getElementById('playlistForm').addEventListener('submit', function(even
 
     const playlistId = document.getElementById('playlistId').value.trim();
     loadPlaylist(playlistId); // Load the playlist with the entered ID
+
     if (soundToggle.checked) {
         staticNoise.pause();
         Startup.play();
-
-        document.getElementsByClassName("playlist-wrapper")[0].style.display = "flex";
-        document.getElementById("playlistForm").style.justifyContent = "left";
     }  
 });
 
 function loadPlaylist(playlistId) {
     const apiKey = 'AIzaSyDxRQY0i22rK2kRbWcPawaItz1XKtOBGHA'; // Replace with your API key
     const playlistContainer = document.getElementById('playlist');
-    const videoFrame = document.getElementById('videoFrame');
+    //const videoFrame = document.getElementById('videoFrame');
     const playlistTitle = document.getElementById('playlistTitle');
 
     document.body.style.backgroundImage = "none";
-
+    document.getElementsByClassName("interface")[0].style.display = "flex";
+    document.getElementById("playlistForm").style.justifyContent = "left";
+    
     fetch(`https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${playlistId}&key=${apiKey}`)
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
-        if (data.items.length > 0) {
-            const title = data.items[0].snippet.title;
-            playlistTitle.innerText = title; // Set the H1 tag's content to the playlist title
+        const title = data.items?.[0]?.snippet?.title;
+        if (title) {
+        playlistTitle.innerText = title;
         } else {
-            console.error('Playlist not found');
-            document.body.style.backgroundImage = "url('staticnoise.gif')";
-            
-            staticNoise.play();
-            alert("Enter a valid Playlist ID");
+        console.error('Playlist not found');
+        document.body.style.backgroundImage = "url('staticnoise.gif')";
+        staticNoise.play();
+        alert("Enter a valid Playlist ID");
         }
     })
-    .catch(error => {
-        console.error('Error fetching playlist title:', error);
-    });
+    .catch(err => console.error('Error fetching playlist title:', err));
 
     let nextPageToken = '';
     // Clear the existing playlist
@@ -92,8 +89,10 @@ function loadPlaylist(playlistId) {
                     const title = item.snippet.title;
                     const videoDiv = document.createElement('div');
                     videoDiv.innerText = title;
+
                     videoDiv.addEventListener('click', () => {
-                        videoFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                        player.loadVideoById(videoId);
+                        player.playVideo();
 
                         if (soundToggle.checked) {
                             clickSound.play();
@@ -102,7 +101,8 @@ function loadPlaylist(playlistId) {
 
                     // Automatically play the first video
                     if (index === 0 && !pageToken) { 
-                        videoFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                        player.loadVideoById(videoId);
+                        player.playVideo();
                     }
 
                     playlistContainer.appendChild(videoDiv);
@@ -111,7 +111,7 @@ function loadPlaylist(playlistId) {
                 // Check if there is a nextPageToken for additional items
                 nextPageToken = data.nextPageToken;
                 if (nextPageToken) {
-                    fetchPlaylistItems(nextPageToken); // Fetch the next set of items
+                    fetchPlaylistItems(nextPageToken);
                 }
             })
             .catch(error => {
@@ -124,10 +124,10 @@ function loadPlaylist(playlistId) {
 }
 
 // ColorPicker functionality
-setInterval(function changeColor() { 
-    let colorpicker = document.getElementById('colorpicker');
-    document.body.style.backgroundColor = colorpicker.value; 
-}, 3);
+colorPicker.addEventListener('input', function() {
+    document.body.style.backgroundColor = colorPicker.value;
+    savePreferences();
+});
 
 //sidepanel
 function togglePanel() {
