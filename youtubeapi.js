@@ -29,5 +29,20 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-    //console.log('Estado do player mudou:', event.data);
+    console.log('Estado do player:', event.data);
+     if (event.data === YT.PlayerState.ENDED && autoplay) {
+        playNextVideo();
+    }
+
+
+    if (event.data === YT.PlayerState.PAUSED && soundToggle.checked && player.getCurrentTime() > 1) {
+        pauseSound.play();
+    }else if ((event.data === YT.PlayerState.BUFFERING || event.data === YT.PlayerState.UNSTARTED) && player.getCurrentTime() > 1) {
+        playSound.play();
+    }
+
+}
+
+function playNextVideo() {
+    loadVideoById()
 }

@@ -3,7 +3,10 @@
     const Startup = new Audio("sounds/vhsstart.wav");
     const changeSound = new Audio("sounds/vhschange.wav");
     const staticNoise = new Audio("sounds/stat.mp3");
-
+    const pauseSound = new Audio("sounds/vhsstop.wav");
+    const playSound = new Audio("sounds/vhsplay.wav")
+//end of sounds
+    
     const soundToggle = document.getElementById('soundToggle');
     const colorPicker = document.getElementById('colorpicker');
 
@@ -52,9 +55,8 @@ document.getElementById('playlistForm').addEventListener('submit', function(even
 });
 
 function loadPlaylist(playlistId) {
-    const apiKey = 'AIzaSyDxRQY0i22rK2kRbWcPawaItz1XKtOBGHA'; // Replace with your API key
+    const apiKey = 'AIzaSyDxRQY0i22rK2kRbWcPawaItz1XKtOBGHA';
     const playlistContainer = document.getElementById('playlist');
-    //const videoFrame = document.getElementById('videoFrame');
     const playlistTitle = document.getElementById('playlistTitle');
 
     document.body.style.backgroundImage = "none";
@@ -80,48 +82,61 @@ function loadPlaylist(playlistId) {
     // Clear the existing playlist
     playlistContainer.innerHTML = '';
 
-    function fetchPlaylistItems(pageToken = '') {
-        fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}&pageToken=${pageToken}&key=${apiKey}`)
-            .then(response => response.json())
-            .then(data => {
-                data.items.forEach((item, index) => {
-                    const videoId = item.snippet.resourceId.videoId;
-                    const title = item.snippet.title;
-                    const videoDiv = document.createElement('div');
-                    videoDiv.innerText = title;
+    const playlistVideos = [];
 
-                    videoDiv.addEventListener('click', () => {
-                        player.loadVideoById(videoId);
-                        player.playVideo();
+function fetchPlaylistItems(pageToken = '') {
+    fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}&pageToken=${pageToken}&key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            data.items.forEach(item => {
+                const videoId = item.snippet.resourceId.videoId;
+                const title = item.snippet.title;
 
-                        if (soundToggle.checked) {
-                            clickSound.play();
-                        }
-                    });
-
-                    // Automatically play the first video
-                    if (index === 0 && !pageToken) { 
-                        player.loadVideoById(videoId);
-                        player.playVideo();
-                    }
-
-                    playlistContainer.appendChild(videoDiv);
-                });
-
-                // Check if there is a nextPageToken for additional items
-                nextPageToken = data.nextPageToken;
-                if (nextPageToken) {
-                    fetchPlaylistItems(nextPageToken);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching playlist:', error);
+                // Add each video as an object to the array
+                playlistVideos.push({ videoId, title });
             });
-    }
+
+            if (data.nextPageToken) {
+                fetchPlaylistItems(data.nextPageToken);
+            } else {
+                renderPlaylist(); // All pages loaded, now render
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching playlist:', error);
+        });
+}
+
+function renderPlaylist() {
+    playlistContainer.innerHTML = ''; // Clear old items
+
+    playlistVideos.forEach((video, index) => {
+        const videoDiv = document.createElement('div');
+        videoDiv.innerText = video.title;
+
+        videoDiv.addEventListener('click', () => {
+            player.loadVideoById(video.videoId);
+            player.playVideo();
+
+            if (soundToggle.checked) {
+                clickSound.play();
+            }
+        });
+
+        if (index === 0) {
+            player.loadVideoById(video.videoId);
+            player.playVideo();
+        }
+
+        playlistContainer.appendChild(videoDiv);
+    });
+}
+
 
     // Initial fetch to load playlist items
     fetchPlaylistItems();
 }
+
 
 // ColorPicker functionality
 colorPicker.addEventListener('input', function() {
@@ -139,8 +154,9 @@ function togglePanel() {
     }
   }
   
+  var autoplay = false;
   function toggleAutoplay() {
-    var autoplay = document.getElementById("autoplayToggle").checked;
+    autoplay = document.getElementById("autoplayToggle").checked;
   }
   
   function toggleFilter() {
