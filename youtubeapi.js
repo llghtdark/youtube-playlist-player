@@ -30,11 +30,10 @@ function onPlayerReady(event) {
 
 function onPlayerStateChange(event) {
     console.log('Estado do player:', event.data);
-     if (event.data === YT.PlayerState.ENDED && autoplay) {
+     if (event.data === YT.PlayerState.ENDED) {
         playNextVideo();
     }
-
-
+    
     if (event.data === YT.PlayerState.PAUSED && soundToggle.checked && player.getCurrentTime() > 1) {
         pauseSound.play();
     }else if ((event.data === YT.PlayerState.BUFFERING || event.data === YT.PlayerState.UNSTARTED) && player.getCurrentTime() > 1) {
@@ -44,5 +43,13 @@ function onPlayerStateChange(event) {
 }
 
 function playNextVideo() {
-    loadVideoById()
+    let videoId = player.getVideoData().video_id;
+    let currentIndex = playlistVideos.findIndex(video => video.videoId === videoId);
+
+    if (nextVideo) {
+    player.loadVideoById(nextVideo);
+    player.playVideo();
+    } else {
+    alert("Playlist ended")
+    }
 }
