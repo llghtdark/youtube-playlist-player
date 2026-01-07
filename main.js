@@ -145,7 +145,7 @@ function colorReset(){
 
 //sidepanel
 function togglePanel() {
-    let panel = document.getElementById("sidePanel");
+    let panel = document.querySelector(".side-panel");
     if (panel.style.right === "0px") {
       panel.style.right = "-250px";
     } else {
